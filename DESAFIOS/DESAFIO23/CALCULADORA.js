@@ -17,14 +17,13 @@
     };
 
     function handleClickOperation(event){
-        $visor.value.endsWith('+') || $visor.value.endsWith('-') || $visor.value.endsWith('x') || $visor.value.endsWith('÷') ?
+        visorEndOperator() ?
         $visor.value = $visor.value.slice(0, -1) + this.value : 
         $visor.value = $visor.value + this.value;
     };
 
     function handleClickEqual(event){
-        if($visor.value.endsWith('+') || $visor.value.endsWith('-') || $visor.value.endsWith('x') || $visor.value.endsWith('÷'))
-            operatorEnd();
+        operatorEnd();
         
         var arrNumbers = $visor.value.match(regexNumbers);
         var arrOperations = $visor.value.match(regexOperations);
@@ -52,9 +51,15 @@
         $visor.value = $visor.value.slice(0, -1);
     };
 
+    function visorEndOperator(){
+        return $visor.value.endsWith('+') || $visor.value.endsWith('-') || $visor.value.endsWith('x') || $visor.value.endsWith('÷');
+    }
+
     function operatorEnd(){
-        win.alert('A EQUAÇÃO NÂO PODE TERMINAR COM UMA OPERAÇÃO!!');
-        $visor.value = $visor.value.slice(0, -1);
+        if(visorEndOperator()){
+            win.alert('A EQUAÇÃO NÂO PODE TERMINAR COM UMA OPERAÇÃO!!');
+            $visor.value = $visor.value.slice(0, -1);
+        }        
     };
 
     Array.prototype.forEach.call($buttonsNumbers, function(buttonNumber) {
@@ -65,11 +70,11 @@
         buttonOperation.addEventListener('click', handleClickOperation, false);
     });
 
-    $buttonClear.addEventListener('click', handleClickClear);
+    $buttonClear.addEventListener('click', handleClickClear, false);
 
-    $buttonDel.addEventListener('click', handleClickDel);
+    $buttonDel.addEventListener('click', handleClickDel, false);
 
-    $buttonEqual.addEventListener('click', handleClickEqual);
+    $buttonEqual.addEventListener('click', handleClickEqual, false);
 
 
 })(window, document);
