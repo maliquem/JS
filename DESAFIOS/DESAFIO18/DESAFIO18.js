@@ -17,18 +17,17 @@ eles! Use um console.log para cada CPF.
 - "101.123-131x32"
 */
 console.log( 'Limpando CPFs:' );
-var regexCleanCPF = /(\d+)\D+(\d+)\D+(\d+)\D+(\d+)/;
-function cleanCPF(regex, cpf1, cpf2, cpf3, cpf4){
-    return cpf1+cpf2+cpf3+cpf4;
+function cleanCPF(cpf){
+    return cpf = cpf.match(/\d+/g).join('');
 };
 var cpf1 = '049-214 3421-1';
 var cpf2 = '210.458.522-05';
 var cpf3 = '735 500 794 - 22';
 var cpf4 = '101.123-131x32';
-cpf1 = cpf1.replace(regexCleanCPF, cleanCPF);
-cpf2 = cpf2.replace(regexCleanCPF, cleanCPF);
-cpf3 = cpf3.replace(regexCleanCPF, cleanCPF);
-cpf4 = cpf4.replace(regexCleanCPF, cleanCPF);
+cpf1 = cleanCPF(cpf1);
+cpf2 = cleanCPF(cpf2);
+cpf3 = cleanCPF(cpf3);
+cpf4 = cleanCPF(cpf4);
 console.log(cpf1);
 console.log(cpf2);
 console.log(cpf3);
