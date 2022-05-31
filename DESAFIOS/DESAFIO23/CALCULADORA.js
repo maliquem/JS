@@ -13,13 +13,13 @@
     function handleClickNumber(event){
         $visor.value == 0 ? 
         $visor.value = this.value : 
-        $visor.value = $visor.value + '' + this.value;
+        $visor.value = $visor.value + this.value;
     };
 
     function handleClickOperation(event){
         $visor.value.endsWith('+') || $visor.value.endsWith('-') || $visor.value.endsWith('x') || $visor.value.endsWith('÷') ?
         $visor.value = $visor.value.slice(0, -1) + this.value : 
-        $visor.value = $visor.value + '' + this.value;
+        $visor.value = $visor.value + this.value;
     };
 
     function operatorEnd(){
