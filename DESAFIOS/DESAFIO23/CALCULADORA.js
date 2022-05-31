@@ -10,19 +10,19 @@
     var regexNumbers = /(\d+)/g;
     var regexOperations = /([-+x÷])/g;
 
-    function handleClickNumber(event){
+    function handleClickNumber(){
         $visor.value == 0 ? 
         $visor.value = this.value : 
         $visor.value = $visor.value + this.value;
     };
 
-    function handleClickOperation(event){
+    function handleClickOperation(){
         visorEndOperator() ?
         $visor.value = $visor.value.slice(0, -1) + this.value : 
         $visor.value = $visor.value + this.value;
     };
 
-    function handleClickEqual(event){
+    function handleClickEqual(){
         operatorEnd();
         
         var arrNumbers = $visor.value.match(regexNumbers);
@@ -43,11 +43,11 @@
         $visor.value = resultado;
     };
 
-    function handleClickClear(event){
+    function handleClickClear(){
         $visor.value = '0';
     };
 
-    function handleClickDel(event){
+    function handleClickDel(){
         $visor.value = $visor.value.slice(0, -1);
     };
 
@@ -58,7 +58,7 @@
     function operatorEnd(){
         if(visorEndOperator()){
             win.alert('A EQUAÇÃO NÂO PODE TERMINAR COM UMA OPERAÇÃO!!');
-            $visor.value = $visor.value.slice(0, -1);
+            handleClickDel();
         }        
     };
 
