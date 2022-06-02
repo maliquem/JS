@@ -8,39 +8,63 @@
     var $buttonDel = doc.querySelector('[data-js="button-operation-del"]');
     var $buttonEqual = doc.querySelector('[data-js="button-operation-equal"]');
     var regexNumbers = /(\d+)/g;
-    var regexOperations = /([-+x÷])/g;
+    var regexOperations = new RegExp('([' + getOperations().join() + '])', 'g');
 
-    function handleClickNumber(){
-        $visor.value == 0 ? 
-        $visor.value = this.value : 
-        $visor.value = $visor.value + this.value;
+    function initialize(){
+        initializeEvents();
+    };
+    
+    function initializeEvents() {
+        Array.prototype.forEach.call($buttonsNumbers, function(buttonNumber) {
+        buttonNumber.addEventListener('click', handleClickNumber, false);
+        });
+        Array.prototype.forEach.call($buttonsOperations, function(buttonOperation) {
+            buttonOperation.addEventListener('click', handleClickOperation, false);
+        });
+        $buttonClear.addEventListener('click', handleClickClear, false);
+        $buttonDel.addEventListener('click', handleClickDel, false);
+        $buttonEqual.addEventListener('click', handleClickEqual, false);
+    };
+
+    function getOperations() {
+        return Array.prototype.map.call($buttonsOperations, function(button) {
+            return button.value;
+        });
+    };
+
+    function handleClickNumber(){        
+        $visor.value == 0 ? $visor.value = this.value : 
+        verifyIfVisorEndWithOperator() && this.value == 0 ? $visor.value = $visor.value + '' :
+        $visor.value += this.value;
     };
 
     function handleClickOperation(){
-        visorEndOperator() ?
+        verifyIfVisorEndWithOperator() ?
         $visor.value = $visor.value.slice(0, -1) + this.value : 
-        $visor.value = $visor.value + this.value;
+        $visor.value += this.value;
     };
 
     function handleClickEqual(){
-        operatorEnd();
-        
+        visorEndWithOperator();        
         var arrNumbers = $visor.value.match(regexNumbers);
         var arrOperations = $visor.value.match(regexOperations);
         var resultado = arrNumbers[0];
+        $visor.value = equalResult(arrNumbers, arrOperations, resultado);
+        
+    };
 
-        arrOperations.forEach(function(ope, index){
+    function equalResult(arrNum, arrOpe, result){
+        arrOpe.forEach(function(ope, index){
             if(ope === '+')
-                resultado = +resultado + +arrNumbers[index+1];
-            if(ope === '-')
-                resultado = +resultado - +arrNumbers[index+1];
+                result = +result + +arrNum[index+1];
+            if(ope == '-')
+                result = +result - +arrNum[index+1];
             if(ope === 'x')
-                resultado = +resultado * +arrNumbers[index+1];
+                result = +result * +arrNum[index+1];
             if(ope === '÷')
-                resultado = +resultado / +arrNumbers[index+1];            
+                result = +result / +arrNum[index+1];            
         });
-
-        $visor.value = resultado;
+        return result;
     };
 
     function handleClickClear(){
@@ -51,30 +75,21 @@
         $visor.value = $visor.value.slice(0, -1);
     };
 
-    function visorEndOperator(){
-        return $visor.value.endsWith('+') || $visor.value.endsWith('-') || $visor.value.endsWith('x') || $visor.value.endsWith('÷');
-    }
-
-    function operatorEnd(){
-        if(visorEndOperator()){
-            win.alert('A EQUAÇÃO NÂO PODE TERMINAR COM UMA OPERAÇÃO!!');
-            handleClickDel();
-        }        
+    function verifyIfVisorEndWithOperator(){
+        var arrOperations = getOperations();
+        var endsWithOperator = false;
+        arrOperations.forEach(function(ope){
+            endsWithOperator = endsWithOperator || $visor.value.endsWith(ope);
+        })
+        return endsWithOperator;
     };
 
-    Array.prototype.forEach.call($buttonsNumbers, function(buttonNumber) {
-        buttonNumber.addEventListener('click', handleClickNumber, false);
-    });    
+    function visorEndWithOperator(){
+        if(verifyIfVisorEndWithOperator()){
+            handleClickDel();
+        }
+    };
 
-    Array.prototype.forEach.call($buttonsOperations, function(buttonOperation) {
-        buttonOperation.addEventListener('click', handleClickOperation, false);
-    });
-
-    $buttonClear.addEventListener('click', handleClickClear, false);
-
-    $buttonDel.addEventListener('click', handleClickDel, false);
-
-    $buttonEqual.addEventListener('click', handleClickEqual, false);
-
+    initialize();
 
 })(window, document);
