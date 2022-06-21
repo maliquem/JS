@@ -1,27 +1,33 @@
 (function(win, doc) {
     'use strict';
 
-/*
-Aproveitando a lib DOM que fizemos na semana anterior, crie agora para ela
-métodos semelhantes aos que existem no array, mas que sirvam para os
-elementos do DOM selecionados.
-Crie os seguintes métodos:
-- forEach, map, filter, reduce, reduceRight, every e some.
+  /*
+  No HTML:
+  - Crie um formulário com um input de texto que receberá um CEP e um botão
+  de submit;
+  - Crie uma estrutura HTML para receber informações de endereço:
+  "Logradouro, Bairro, Estado, Cidade e CEP." Essas informações serão
+  preenchidas com os dados da requisição feita no JS.
+  - Crie uma área que receberá mensagens com o status da requisição:
+  "Carregando, sucesso ou erro."
 
-Crie também métodos que verificam o tipo do objeto passado por parâmetro.
-Esses métodos não precisam depender de criar um novo elmento do DOM, podem
-ser métodos estáticos.
-
-Métodos estáticos não obrigam o uso do `new`, podendo ser usados diretamente
-no objeto, como nos exemplos abaixo:
-DOM.isArray([1, 2, 3]); // true
-DOM.isFunction(function() {}); // true
-DOM.isNumber('numero'); // false
-
-Crie os seguintes métodos para verificação de tipo:
-- isArray, isObject, isFunction, isNumber, isString, isBoolean, isNull.
-O método isNull deve retornar `true` se o valor for null ou undefined.
-*/
+  No JS:
+  - O CEP pode ser entrado pelo usuário com qualquer tipo de caractere, mas
+  deve ser limpo e enviado somente os números para a requisição abaixo;
+  - Ao submeter esse formulário, deve ser feito um request Ajax para a URL:
+  "https://viacep.com.br/ws/[CEP]/json/", onde [CEP] será o CEP passado
+  no input criado no HTML;
+  - Essa requisição trará dados de um CEP em JSON. Preencha campos na tela
+  com os dados recebidos.
+  - Enquanto os dados são buscados, na área de mensagens de status, deve mostrar
+  a mensagem: "Buscando informações para o CEP [CEP]..."
+  - Se não houver dados para o CEP entrado, mostrar a mensagem:
+  "Não encontramos o endereço para o CEP [CEP]."
+  - Se houver endereço para o CEP digitado, mostre a mensagem:
+  "Endereço referente ao CEP [CEP]:"
+  - Utilize a lib DOM criada anteriormente para facilitar a manipulação e
+  adicionar as informações em tela.
+  */
 
     function DOM(elements){
         this.element = doc.querySelectorAll(elements);     
@@ -91,7 +97,7 @@ O método isNull deve retornar `true` se o valor for null ou undefined.
 
     function handleSubmitFormCEP(event){
         event.preventDefault();
-        var url = 'https://ws.apicep.com/cep/[CEP].json'.replace('[CEP]', $inputCEP.get()[0].value.match(/\d+/g).join(''));
+        var url = 'https://viacep.com.br/ws/[CEP]/json/'.replace('[CEP]', $inputCEP.get()[0].value.match(/\d+/g).join(''));
         console.log(url);
         ajax.open('GET', url);
         ajax.send();
@@ -99,10 +105,47 @@ O método isNull deve retornar `true` se o valor for null ou undefined.
     }
 
     function handleReadyStateChange() {
-        if (ajax.readyState === 4 && ajax.status === 200) {
-            console.log('Popular formulário', ajax.responseText);
+        if (isRequestOk)
+         fillCEPFields();
+    }
+
+    function isRequestOk(){
+      return ajax.readyState === 4 && ajax.status === 200;
+    }
+
+    function fillCEPFields() {
+        var data = parseData();
+        if(!data) 
+            return console.error('DATA ERROR', data);
+        console.log('DATA', data);
+        var $cep = new DOM('[data-js="cep"]');
+        var $logradouro = new DOM('[data-js="logradouro"]');
+        var $bairro = new DOM('[data-js="bairro"]');
+        var $cidade = new DOM('[data-js="cidade"]');
+        var $estado = new DOM('[data-js="estado"]');
+        $cep.get()[0].textContent = data.cep;
+        $logradouro.get()[0].textContent = data.logradouro;
+        $bairro.get()[0].textContent = data.bairro;
+        $cidade.get()[0].textContent = data.localidade;
+        $estado.get()[0].textContent = data.uf;        
+    }
+
+    function parseData() {
+        var result;
+        try {
+            result = JSON.parse(ajax.responseText);
+        } catch (error) {
+            result = null;
         }
-        console.log('Carregando...');
+        return result;
+    }
+
+    function getMessage(type){
+        return {
+            loading: 'Buscando informações para o cep [CEP]...',
+            ok: 'Endereço referente ao CEP [CEP]: ',
+            error: 'Não encontramos o endereço para o CEP [CEP]'
+        }[type];
     }
 
 })(window, document);
