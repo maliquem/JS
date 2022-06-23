@@ -113,11 +113,20 @@
     function handleReadyStateChange() {
         if (isRequestOk)
          fillCEPFields();
-        getMessage('error'); 
+        getMessage('error');
+        emptyCEPFields(); 
     }
 
     function isRequestOk(){
         return ajax.readyState === 4 && ajax.status === 200;
+    }
+
+    function emptyCEPFields(){
+        $cep.get()[0].textContent = '-';
+        $logradouro.get()[0].textContent = '-';
+        $bairro.get()[0].textContent = '-';
+        $cidade.get()[0].textContent = '-';
+        $estado.get()[0].textContent = '-';        
     }
 
     function fillCEPFields() {
