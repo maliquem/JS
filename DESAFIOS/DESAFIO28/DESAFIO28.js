@@ -106,15 +106,15 @@
         var url = 'https://viacep.com.br/ws/[CEP]/json/'.replace('[CEP]', $inputCEP.get()[0].value.match(/\d+/g).join(''));
         console.log(url);
         ajax.open('GET', url);
-        ajax.send();
+        ajax.send();        
         ajax.addEventListener('readystatechange', handleReadyStateChange);
     }
 
     function handleReadyStateChange() {
         if (isRequestOk)
-         fillCEPFields();
-        getMessage('error');
-        emptyCEPFields(); 
+            fillCEPFields();
+        if (ajax.status === 0)
+            emptyCEPFields(); 
     }
 
     function isRequestOk(){
@@ -122,6 +122,7 @@
     }
 
     function emptyCEPFields(){
+        getMessage('error');
         $cep.get()[0].textContent = '-';
         $logradouro.get()[0].textContent = '-';
         $bairro.get()[0].textContent = '-';
@@ -133,22 +134,19 @@
         var data = parseData();
         if(!data) 
             return console.error('DATA ERROR', data);
-        getMessage('ok');
+        getMessage('ok');        
         $cep.get()[0].textContent = data.cep;
-        $logradouro.get()[0].textContent = data.logradouro;
-        $bairro.get()[0].textContent = data.bairro;
         $cidade.get()[0].textContent = data.localidade;
+        $logradouro.get()[0].textContent = data.logradouro;
+        $bairro.get()[0].textContent = data.bairro;        
         $estado.get()[0].textContent = data.uf;        
     }
 
     function parseData() {
         var result;
         try {
-            console.log(ajax.responseText);
             result = JSON.parse(ajax.responseText);
         } catch (error) {
-            //console.log(ajax.responseText);
-            console.log(error);
             result = null;
         }
         return result;
