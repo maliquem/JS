@@ -103,6 +103,7 @@
 
     function handleSubmitFormCEP(event){
         event.preventDefault();
+        getMessage('loading');
         var url = 'https://viacep.com.br/ws/[CEP]/json/'.replace('[CEP]', $inputCEP.get()[0].value.match(/\d+/g).join(''));
         console.log(url);
         ajax.open('GET', url);
@@ -111,10 +112,7 @@
     }
 
     function handleReadyStateChange() {
-        if (isRequestOk)
-            fillCEPFields();
-        if (ajax.status === 0)
-            emptyCEPFields(); 
+        isRequestOk() ? fillCEPFields() : emptyCEPFields(); 
     }
 
     function isRequestOk(){
@@ -139,7 +137,9 @@
         $cidade.get()[0].textContent = data.localidade;
         $logradouro.get()[0].textContent = data.logradouro;
         $bairro.get()[0].textContent = data.bairro;        
-        $estado.get()[0].textContent = data.uf;        
+        $estado.get()[0].textContent = data.uf;
+        if(data.erro)
+            emptyCEPFields();        
     }
 
     function parseData() {
