@@ -135,8 +135,11 @@
     function parseData() {
         var result;
         try {
+            console.log(ajax.responseText);
             result = JSON.parse(ajax.responseText);
         } catch (error) {
+            //console.log(ajax.responseText);
+            console.log(error);
             result = null;
         }
         return result;
