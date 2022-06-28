@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CADASTRO DE CARRO</title>
+</head>
+
+<body>
+
+    <style>
+        div#tables {
+            height: 300px;
+            overflow: auto;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid red;
+            border-collapse: collapse;
+            font-size: 16px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans';
+            padding: 10px;
+        }
+
+        th {
+            width: 20%;
+        }
+    </style>
+
+    <div>
+        <p><strong>EMPRESA: </strong> <span data-js="empresa">-</span></p>
+        <p><strong>TELEFONE: </strong> <span data-js="telefone">-</span></p>
+    </div>
+
+    <form data-js="form-carro">
+        <p><strong>IMAGEM DO CARRO (URL): </strong></p> 
+        <p><input type="text" data-js="input-imagem"></p>
+        <p><strong>MARCA/MODELO: </strong> </p>
+        <p><input type="text" data-js="input-marca"></p>
+        <p><strong>ANO: </strong> </p>
+        <p><input type="text" data-js="input-ano"></p>
+        <p><strong>PLACA: </strong> </p>
+        <p><input type="text" data-js="input-placa"></p>
+        <p><strong>COR: </strong> </p>
+        <p><input type="text" data-js="input-cor"></p>
+        <button type="submit">CADASTRAR CARRO</button>
+    </form>
+
+    <p></p>
+    <p></p>
+
+    <div id="tables">
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>IMAGEM DO CARRO (URL)</th>
+                    <th>MARCA/MODELO</th>
+                    <th>ANO</th>
+                    <th>PLACA</th>
+                    <th>COR</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <script src="DOM.js"></script>
+    <script src="APP.js"></script>
+</body>
+
+</html>
