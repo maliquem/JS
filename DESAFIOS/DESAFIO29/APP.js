@@ -1,4 +1,4 @@
-(function(DOM) {
+(function(DOM, doc) {
   'use strict';
 
   /*
@@ -49,7 +49,7 @@
     $formCARRO.on('submit', handleSubmitFormCARRO);
 
     function getCompany(){
-      var url = 'company.json'
+      var url = 'https://raw.githubusercontent.com/maliquem/JS/master/DESAFIOS/DESAFIO29/company.json'
       ajax.open('GET', url);
       ajax.send();        
       ajax.addEventListener('readystatechange', handleReadyStateChange);
@@ -75,10 +75,20 @@
       event.preventDefault();
     }
 
+    function isFormComplete(){
+      var complete;
+      $formCARRO.forEach(function(value){
+        if (value.isThat === 'Undefined' || value.isThat === 'Null')    
+          complete = false;
+        complete = true;
+      })
+      return complete;
+    }
+
     getCompany();
     
   }
 
   app();
 
-})(window.DOM);
+})(window.DOM, document);
