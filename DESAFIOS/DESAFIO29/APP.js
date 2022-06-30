@@ -40,6 +40,8 @@
     var $textCompany = new DOM('[data-js="empresa"]')
     var $textPhone = new DOM('[data-js="telefone"]')
     var $formCARRO = new DOM('[data-js="form-carro"]');
+    var $statusForm = new DOM('[data-js="status"]');
+    var $table = doc.querySelector('[data-js="table"]')
     var $inputImagem = new DOM('[data-js="input-imagem"]');
     var $inputMarca = new DOM('[data-js="input-marca"]');
     var $inputAno = new DOM('[data-js="input-ano"]');
@@ -64,25 +66,80 @@
     function parseData() {
       var result;
       try {
-          result = JSON.parse(ajax.responseText);
+        result = JSON.parse(ajax.responseText);
       } catch (error) {
-          result = null;
+        result = null;
       }
       return result;
     }
 
     function handleSubmitFormCARRO(event){
       event.preventDefault();
+      isFormComplete() ? addTableContent() : getMessage('error');
+    }
+
+    function emptyForm(){
+      $inputImagem.get()[0].value = '';
+      $inputMarca.get()[0].value = '';
+      $inputAno.get()[0].value = '';
+      $inputPlaca.get()[0].value = '';
+      $inputCor.get()[0].value = '';
+    }
+
+    function addTableContent(){
+      var trElement = doc.createElement('tr');
+      var tbodyElement = doc.createElement('tbody');
+      var imageTable = doc.createElement('td');
+      var marcaTable = doc.createElement('td');
+      var anoTable = doc.createElement('td');
+      var placaTable = doc.createElement('td');
+      var corTable = doc.createElement('td');
+      var buttonDelete = doc.createElement('button');
+      imageTable.innerHTML = $inputImagem.get()[0].value;
+      marcaTable.innerHTML = $inputMarca.get()[0].value;
+      anoTable.innerHTML = $inputAno.get()[0].value;
+      placaTable.innerHTML = $inputPlaca.get()[0].value;
+      corTable.innerHTML = $inputCor.get()[0].value;
+      buttonDelete.innerHTML = 'DEL';
+      trElement.appendChild(imageTable);      
+      trElement.appendChild(marcaTable);      
+      trElement.appendChild(anoTable);      
+      trElement.appendChild(placaTable);      
+      trElement.appendChild(corTable);
+      trElement.appendChild(buttonDelete);
+      tbodyElement.appendChild(trElement);
+      $table.appendChild(tbodyElement);
+      getMessage('ok');
+      emptyForm();
+      buttonDelete.addEventListener('click', function(event){
+        event.preventDefault();
+        this.parentElement.remove();
+        getMessage('del');
+      }, false);      
     }
 
     function isFormComplete(){
-      var complete;
-      $formCARRO.forEach(function(value){
-        if (value.isThat === 'Undefined' || value.isThat === 'Null')    
-          complete = false;
-        complete = true;
-      })
-      return complete;
+      var complete = true;
+      if($inputImagem.get()[0].value === '')
+        complete = false;
+      if($inputMarca.get()[0].value === '')
+        complete = false;
+      if($inputAno.get()[0].value === '')
+        complete = false;
+      if($inputPlaca.get()[0].value === '')
+        complete = false;
+      if($inputCor.get()[0].value === '')
+        complete = false;
+      return complete;      
+    }
+
+    function getMessage(type){
+      var message = {
+        ok: 'Carro cadastrado com sucesso!',
+        error: 'Um ou mais campos, não estão preenchidos corretamente.',
+        del: 'Carro excluido com sucesso!'
+      };
+      $statusForm.get()[0].textContent = message[type];
     }
 
     getCompany();

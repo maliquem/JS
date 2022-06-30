@@ -31,30 +31,26 @@
         }
     </style>
 
+    <div class="complete"> 
+
     <div>
         <p><strong>EMPRESA: </strong> <span data-js="empresa">-</span></p>
         <p><strong>TELEFONE: </strong> <span data-js="telefone">-</span></p>
     </div>
 
     <form data-js="form-carro">
-        <p><strong>IMAGEM DO CARRO (URL): </strong></p> 
-        <p><input type="text" data-js="input-imagem"></p>
-        <p><strong>MARCA/MODELO: </strong> </p>
-        <p><input type="text" data-js="input-marca"></p>
-        <p><strong>ANO: </strong> </p>
-        <p><input type="text" data-js="input-ano"></p>
-        <p><strong>PLACA: </strong> </p>
-        <p><input type="text" data-js="input-placa"></p>
-        <p><strong>COR: </strong> </p>
-        <p><input type="text" data-js="input-cor"></p>
+        <p><label>DO CARRO (URL): <input type="text" data-js="input-imagem"></label></p> 
+        <p><label>MARCA/MODELO: <input type="text" data-js="input-marca"></label></p> 
+        <p><label>ANO: <input type="text" data-js="input-ano"></label></p> 
+        <p><label>PLACA: <input type="text" data-js="input-placa"></label></p> 
+        <p><label>COR: <input type="text" data-js="input-cor"></label></p> 
         <button type="submit">CADASTRAR CARRO</button>
     </form>
 
-    <p></p>
-    <p></p>
+    <p><strong>STATUS: </strong> <span data-js="status">-</span></p>
 
     <div id="tables">
-        <table id="table">
+        <table data-js="table">
             <thead>
                 <tr>
                     <th>IMAGEM DO CARRO (URL)</th>
@@ -65,6 +61,7 @@
                 </tr>
             </thead>
         </table>
+    </div>
     </div>
     <script src="DOM.js"></script>
     <script src="APP.js"></script>

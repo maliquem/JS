@@ -5,6 +5,14 @@
         this.element = doc.querySelectorAll(elements);     
     }
 
+    DOM.prototype.createElement = function createElement(element){
+        doc.createElement(element);
+    }
+
+    DOM.prototype.appendChild = function appendChild(child){
+        this.element.appendChild(child);
+    }
+
     DOM.prototype.on = function on(event, callback){
         Array.prototype.forEach.call(this.element, function(element) {
             element.addEventListener(event, callback, false);
