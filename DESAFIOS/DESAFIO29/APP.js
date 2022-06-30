@@ -37,16 +37,16 @@
   */
 
   function app(){
-    var $textCompany = new DOM('[data-js="empresa"]')
-    var $textPhone = new DOM('[data-js="telefone"]')
-    var $formCARRO = new DOM('[data-js="form-carro"]');
+    var $textCompany = new DOM('[data-js="company-name"]')
+    var $textPhone = new DOM('[data-js="company-phone"]')
+    var $formCARRO = new DOM('[data-js="form-car"]');
     var $statusForm = new DOM('[data-js="status"]');
     var $table = doc.querySelector('[data-js="table"]')
-    var $inputImagem = new DOM('[data-js="input-imagem"]');
-    var $inputMarca = new DOM('[data-js="input-marca"]');
-    var $inputAno = new DOM('[data-js="input-ano"]');
-    var $inputPlaca = new DOM('[data-js="input-placa"]');
-    var $inputCor = new DOM('[data-js="input-cor"]');
+    var $inputImagem = new DOM('[data-js="input-image"]');
+    var $inputMarca = new DOM('[data-js="input-brand"]');
+    var $inputAno = new DOM('[data-js="input-year"]');
+    var $inputPlaca = new DOM('[data-js="input-plate"]');
+    var $inputCor = new DOM('[data-js="input-color"]');
     var ajax = new XMLHttpRequest();
     $formCARRO.on('submit', handleSubmitFormCARRO);
 
