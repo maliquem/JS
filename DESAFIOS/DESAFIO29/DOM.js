@@ -5,7 +5,6 @@
     if (!(this instanceof DOM)) {
       return new DOM(elements);
     }
-
     this.element = doc.querySelectorAll(elements);
   }
 
@@ -87,5 +86,5 @@
   };
 
   win.DOM = DOM
-  
+
 })(window, document);

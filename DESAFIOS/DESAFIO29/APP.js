@@ -37,81 +37,81 @@
   */
 
   function app(){
-    var $textCompany = new DOM('[data-js="company-name"]')
-    var $textPhone = new DOM('[data-js="company-phone"]')
-    var $formCARRO = new DOM('[data-js="form-car"]');
-    var $statusForm = new DOM('[data-js="status"]');
-    var $table = doc.querySelector('[data-js="table"]')
-    var $inputImagem = new DOM('[data-js="input-image"]');
-    var $inputMarca = new DOM('[data-js="input-brand"]');
-    var $inputAno = new DOM('[data-js="input-year"]');
-    var $inputPlaca = new DOM('[data-js="input-plate"]');
-    var $inputCor = new DOM('[data-js="input-color"]');
     var ajax = new XMLHttpRequest();
-    $formCARRO.on('submit', handleSubmitFormCARRO);
+    var $table = doc.querySelector('[data-js="table"]');
+    var $textCompany = DOM('[data-js="company-name"]');
+    var $textPhone = DOM('[data-js="company-phone"]');
+    var $formCARRO = DOM('[data-js="form-car"]');
+    var $statusForm = DOM('[data-js="status"]');
+    var $inputImagem = DOM('[data-js="input-image"]');
+    var $inputMarca = DOM('[data-js="input-brand"]');
+    var $inputAno = DOM('[data-js="input-year"]');
+    var $inputPlaca = DOM('[data-js="input-plate"]');
+    var $inputCor = DOM('[data-js="input-color"]');
+    $formCARRO.on('submit', handleSubmitFormCAR);
 
     function getCompany(){
-      var url = 'https://raw.githubusercontent.com/maliquem/JS/master/DESAFIOS/DESAFIO29/company.json'
-      ajax.open('GET', url);
-      ajax.send();        
+      ajax.open('GET', 'https://raw.githubusercontent.com/maliquem/JS/master/DESAFIOS/DESAFIO29/company.json');
+      ajax.send();
       ajax.addEventListener('readystatechange', handleReadyStateChange);
     }
 
     function handleReadyStateChange(){
-      var data = parseData();
-      $textCompany.get()[0].textContent = data.name;
-      $textPhone.get()[0].textContent = data.phone;
+      isRequestOk(ajax) ? fillHeader() : getMessage('ajax');      
     }
 
-    function parseData() {
-      var result;
-      try {
-        result = JSON.parse(ajax.responseText);
-      } catch (error) {
-        result = null;
-      }
-      return result;
+    function fillHeader(){
+      var data = JSON.parse(request.responseText);
+      $textCompany.get().textContent = data.name;
+      $textPhone.get().textContent = data.phone;
     }
 
-    function handleSubmitFormCARRO(event){
+    function isRequestOk(request){
+      return request.readyState === 4 && request.status === 200;
+    }
+
+    function handleSubmitFormCAR(event){
       event.preventDefault();
       isFormComplete() ? addTableContent() : getMessage('error');
     }
 
     function emptyForm(){
-      $inputImagem.get()[0].value = '';
-      $inputMarca.get()[0].value = '';
-      $inputAno.get()[0].value = '';
-      $inputPlaca.get()[0].value = '';
-      $inputCor.get()[0].value = '';
+      DOM('input').forEach(function(input){
+        input.value = '';
+      });
     }
 
     function addTableContent(){
-      var trElement = doc.createElement('tr');
-      var tbodyElement = doc.createElement('tbody');
-      var imageTable = doc.createElement('td');
-      var marcaTable = doc.createElement('td');
-      var anoTable = doc.createElement('td');
-      var placaTable = doc.createElement('td');
-      var corTable = doc.createElement('td');
-      var buttonDelete = doc.createElement('button');
-      imageTable.innerHTML = $inputImagem.get()[0].value;
-      marcaTable.innerHTML = $inputMarca.get()[0].value;
-      anoTable.innerHTML = $inputAno.get()[0].value;
-      placaTable.innerHTML = $inputPlaca.get()[0].value;
-      corTable.innerHTML = $inputCor.get()[0].value;
-      buttonDelete.innerHTML = 'DEL';
-      trElement.appendChild(imageTable);      
-      trElement.appendChild(marcaTable);      
-      trElement.appendChild(anoTable);      
-      trElement.appendChild(placaTable);      
-      trElement.appendChild(corTable);
-      trElement.appendChild(buttonDelete);
-      tbodyElement.appendChild(trElement);
-      $table.appendChild(tbodyElement);
+      var $trElement = doc.createElement('tr');
+      var $tbodyElement = doc.createElement('tbody');
+      var $imageTable = doc.createElement('td');
+      var $marcaTable = doc.createElement('td');
+      var $anoTable = doc.createElement('td');
+      var $placaTable = doc.createElement('td');
+      var $corTable = doc.createElement('td');
+      var $buttonDelete = doc.createElement('button');
+      var $image = doc.createElement('img');
+
+      $image.src = $inputImagem.get().value;
+      $marcaTable.innerHTML = $inputMarca.get().value;
+      $anoTable.innerHTML = $inputAno.get().value;
+      $placaTable.innerHTML = $inputPlaca.get().value;
+      $corTable.innerHTML = $inputCor.get().value;
+      $buttonDelete.innerHTML = 'DEL';
+
+      $imageTable.appendChild($image);
+      $trElement.appendChild($imageTable);      
+      $trElement.appendChild($marcaTable);      
+      $trElement.appendChild($anoTable);      
+      $trElement.appendChild($placaTable);      
+      $trElement.appendChild($corTable);
+      $trElement.appendChild($buttonDelete);
+      $tbodyElement.appendChild($trElement);
+      $table.appendChild($tbodyElement);
+
       getMessage('ok');
       emptyForm();
-      buttonDelete.addEventListener('click', function(event){
+      $buttonDelete.addEventListener('click', function(event){
         event.preventDefault();
         this.parentElement.remove();
         getMessage('del');
@@ -120,16 +120,10 @@
 
     function isFormComplete(){
       var complete = true;
-      if($inputImagem.get()[0].value === '')
-        complete = false;
-      if($inputMarca.get()[0].value === '')
-        complete = false;
-      if($inputAno.get()[0].value === '')
-        complete = false;
-      if($inputPlaca.get()[0].value === '')
-        complete = false;
-      if($inputCor.get()[0].value === '')
-        complete = false;
+      DOM('input').forEach(function(input){
+      if(input.value === '')
+          complete = false;
+      });
       return complete;      
     }
 
@@ -137,9 +131,10 @@
       var message = {
         ok: 'Carro cadastrado com sucesso!',
         error: 'Um ou mais campos, não estão preenchidos corretamente.',
-        del: 'Carro excluido com sucesso!'
+        del: 'Carro excluido com sucesso!',
+        ajax: 'Erro na requisição AJAX'
       };
-      $statusForm.get()[0].textContent = message[type];
+      $statusForm.get().textContent = message[type];
     }
 
     getCompany();
