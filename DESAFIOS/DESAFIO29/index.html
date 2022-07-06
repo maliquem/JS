@@ -84,7 +84,7 @@
             </li>
             <li>
                 <label>Marca / Modelo:</label>
-                <input type="text" placeholder="Corolla, Gol, Onix..." data-js="input-brand" />
+                <input type="text" placeholder="Corolla, Gol, Onix..." pattern="[a-zA-Z0-9]+" data-js="input-brand" />
             </li>
             <li>
                 <label>Ano:</label>
@@ -92,11 +92,11 @@
             </li>
             <li>
                 <label>Placa:</label>
-                <input type="text" placeholder="ABC-1234" data-js="input-plate" />
+                <input type="text" placeholder="ABC-1234" pattern="[a-zA-Z]{3}-{1}\d{4}" data-js="input-plate" />
             </li>
             <li>
                 <label for="color">Cor:</label>
-                <input list="colors" data-js="input-color" name="color" />
+                <input list="colors" pattern="[a-zA-Z0-9]+" data-js="input-color" name="color" />
                 <datalist id="colors">
                     <option value="PRETO">
                     <option value="BRANCO">
